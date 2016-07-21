@@ -26013,24 +26013,114 @@ module.exports = Routes;
 
 },{"./components/pages/Base.jsx":239,"./components/pages/News.jsx":240,"./components/pages/Photos.jsx":241,"history":45,"react":235,"react-router":85}],239:[function(require,module,exports){
 var React = require('react');
+var SocialMedia = require('./../social_media/SocialMedia.jsx');
+var TabLinks = require('./../tab_links/TabLinks.jsx');
 
 var Base = React.createClass({
     displayName: 'Base',
 
     render: function () {
+
+        var socialMedia = [{ url: "http://www.facebook.com", src: "http://www.iconsdb.com/icons/preview/white/facebook-3-xxl.png" }, { url: "http://www.twitter.com", src: "http://www.teammeadowsja.com/images/twitter.png" }, { url: "http://www.instagram.com", src: "http://www.iconsplace.com/icons/preview/white/instagram-256.png" }, { url: "http://www.linkedin.com", src: "http://www.cadredc.com/wp-content/themes/cadre-custom/images/icon_white_linkedin.png" }, { url: "", src: "http://www.iconsdb.com/icons/preview/white/email-12-xxl.png" }];
+
+        var links = [{ link: "news", text: "NEWS" }, { link: "photos", text: "PHOTOS" }];
+
+        var headerStyle = {
+            color: "white",
+            width: "100%",
+            height: "200px",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#3E50B5"
+        };
+
+        var greyStyle = {
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: "200px",
+            left: 0,
+            backgroundColor: "#E9E9ED"
+        };
+
+        var bodyStyle = {
+            color: "white"
+        };
+
+        var socialStyle = {
+            position: "absolute",
+            bottom: 0,
+            right: 0
+        };
+
+        var tabRowStyle = {
+            height: "50px"
+        };
+
+        var tabStyle = {
+            position: "absolute",
+            bottom: 0,
+            right: 0
+        };
+
         return React.createElement(
             'div',
             null,
+            React.createElement('div', { id: 'header', style: headerStyle }),
+            React.createElement('div', { id: 'grey', style: greyStyle }),
             React.createElement(
-                'h1',
-                null,
-                'Header'
-            ),
-            this.props.children,
-            React.createElement(
-                'h1',
-                null,
-                'Footer'
+                'div',
+                { className: 'container', style: bodyStyle },
+                React.createElement(
+                    'row',
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'col-sm-8 col-sm-offset-2' },
+                        React.createElement(
+                            'h1',
+                            null,
+                            'Country News'
+                        ),
+                        React.createElement(
+                            'div',
+                            { style: socialStyle },
+                            React.createElement(SocialMedia, { list: socialMedia })
+                        )
+                    )
+                ),
+                React.createElement(
+                    'row',
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'col-sm-8 col-sm-offset-2' },
+                        'Top stories in my country'
+                    )
+                ),
+                React.createElement(
+                    'row',
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'col-sm-8 col-sm-offset-2', style: tabRowStyle },
+                        React.createElement(
+                            'div',
+                            { style: tabStyle },
+                            React.createElement(TabLinks, { list: links })
+                        )
+                    )
+                ),
+                React.createElement(
+                    'row',
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'col-sm-8 col-sm-offset-2' },
+                        this.props.children
+                    )
+                )
             )
         );
     }
@@ -26038,17 +26128,25 @@ var Base = React.createClass({
 
 module.exports = Base;
 
-},{"react":235}],240:[function(require,module,exports){
+},{"./../social_media/SocialMedia.jsx":243,"./../tab_links/TabLinks.jsx":245,"react":235}],240:[function(require,module,exports){
 var React = require('react');
 
 var News = React.createClass({
-    displayName: 'News',
+    displayName: "News",
 
     render: function () {
         return React.createElement(
-            'h1',
-            null,
-            'News'
+            "div",
+            { className: "row" },
+            React.createElement(
+                "div",
+                { className: "col-sm-12" },
+                React.createElement(
+                    "h1",
+                    null,
+                    "News"
+                )
+            )
         );
     }
 });
@@ -26074,9 +26172,116 @@ module.exports = Photos;
 
 },{"react":235}],242:[function(require,module,exports){
 var React = require('react');
+
+var IconButton = React.createClass({
+    displayName: "IconButton",
+
+    render: function () {
+
+        var style = {
+            padding: "5px"
+        };
+
+        return React.createElement(
+            "a",
+            { href: this.props.url },
+            React.createElement("img", { style: style, src: this.props.src, width: "30", height: "30" })
+        );
+    }
+});
+
+module.exports = IconButton;
+
+},{"react":235}],243:[function(require,module,exports){
+var React = require('react');
+var IconButton = require('./IconButton.jsx');
+
+var SocialMedia = React.createClass({
+    displayName: 'SocialMedia',
+
+    render: function () {
+        var style = {
+            display: "inline_block"
+        };
+
+        var createItem = function (item, index) {
+            return React.createElement(IconButton, { key: index + item, src: item.src, url: item.url });
+        };
+
+        return React.createElement(
+            'div',
+            { style: style },
+            this.props.list.map(createItem)
+        );
+    }
+});
+module.exports = SocialMedia;
+
+},{"./IconButton.jsx":242,"react":235}],244:[function(require,module,exports){
+var React = require('react');
+var Link = require('react-router').Link;
+
+var LinkItem = React.createClass({
+    displayName: 'LinkItem',
+
+    render: function () {
+
+        var style = {
+
+            display: "inline"
+        };
+
+        var aStyle = {
+            padding: "5px",
+            color: "white",
+            fontSize: 14,
+            fontWeight: 'bold'
+        };
+
+        return React.createElement(
+            'div',
+            { style: style },
+            React.createElement(
+                Link,
+                { style: aStyle, to: this.props.link },
+                this.props.text
+            )
+        );
+    }
+});
+
+module.exports = LinkItem;
+
+},{"react":235,"react-router":85}],245:[function(require,module,exports){
+var React = require('react');
+var LinkItem = require('./LinkItem.jsx');
+
+var TabLinks = React.createClass({
+    displayName: 'TabLinks',
+
+    render: function () {
+        var style = {
+            display: "inline_block"
+        };
+
+        var createItem = function (item, index) {
+            return React.createElement(LinkItem, { key: index + item, text: item.text, link: item.link });
+        };
+
+        return React.createElement(
+            'div',
+            { style: style },
+            this.props.list.map(createItem)
+        );
+    }
+});
+module.exports = TabLinks;
+
+},{"./LinkItem.jsx":244,"react":235}],246:[function(require,module,exports){
+var React = require('react');
 var ReactDOM = require('react-dom');
 var Routes = require('./Routes.jsx');
 
 ReactDOM.render(Routes, document.getElementById('main'));
 
-},{"./Routes.jsx":238,"react":235,"react-dom":55}]},{},[242]);
+},{"./Routes.jsx":238,"react":235,"react-dom":55}]},{},[246]);
