@@ -26011,7 +26011,103 @@ var Routes = React.createElement(
 
 module.exports = Routes;
 
-},{"./components/pages/Base.jsx":239,"./components/pages/News.jsx":240,"./components/pages/Photos.jsx":241,"history":45,"react":235,"react-router":85}],239:[function(require,module,exports){
+},{"./components/pages/Base.jsx":241,"./components/pages/News.jsx":242,"./components/pages/Photos.jsx":243,"history":45,"react":235,"react-router":85}],239:[function(require,module,exports){
+var React = require('react');
+var PhotoGrid = require('../photo_grid/PhotoGrid.jsx');
+var Thumbnail = require('../photo_grid/Thumbnail.jsx');
+
+var NewsItem = React.createClass({
+    displayName: 'NewsItem',
+
+    render: function () {
+
+        var style = {
+            color: "black"
+        };
+
+        var locationStyle = {
+            color: "grey",
+            paddingTop: 5,
+            fontWeight: "bold"
+        };
+
+        return React.createElement(
+            'div',
+            { className: 'panel' },
+            React.createElement(
+                'div',
+                { className: 'panel-body', style: style },
+                React.createElement(
+                    'div',
+                    { className: 'col-sm-2' },
+                    React.createElement(Thumbnail, { src: this.props.icon, height: 80, width: 80 })
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'col-sm-8' },
+                    React.createElement(
+                        'h4',
+                        null,
+                        React.createElement(
+                            'b',
+                            null,
+                            this.props.title
+                        )
+                    ),
+                    React.createElement(
+                        'h4',
+                        null,
+                        this.props.subtitle
+                    ),
+                    React.createElement('br', null),
+                    React.createElement(
+                        'div',
+                        null,
+                        this.props.content
+                    ),
+                    React.createElement(PhotoGrid, { images: this.props.images, height: 100 }),
+                    React.createElement(
+                        'div',
+                        { style: locationStyle },
+                        this.props.location
+                    )
+                )
+            )
+        );
+    }
+});
+
+module.exports = NewsItem;
+
+},{"../photo_grid/PhotoGrid.jsx":244,"../photo_grid/Thumbnail.jsx":245,"react":235}],240:[function(require,module,exports){
+var React = require('react');
+var NewsItem = require('./NewsItem.jsx');
+
+var NewsItemsList = React.createClass({
+    displayName: 'NewsItemsList',
+
+    render: function () {
+
+        var baseStyle = {
+            paddingTop: 10,
+            paddingBottom: 10
+        };
+
+        var createItem = function (item, index) {
+            return React.createElement(NewsItem, { key: index, icon: item.icon, title: item.title, subtitle: item.subtitle, content: item.content, location: item.location, images: item.images });
+        };
+
+        return React.createElement(
+            'div',
+            { style: baseStyle },
+            this.props.items.map(createItem)
+        );
+    }
+});
+
+module.exports = NewsItemsList;
+
+},{"./NewsItem.jsx":239,"react":235}],241:[function(require,module,exports){
 var React = require('react');
 var SocialMedia = require('./../social_media/SocialMedia.jsx');
 var TabLinks = require('./../tab_links/TabLinks.jsx');
@@ -26128,24 +26224,45 @@ var Base = React.createClass({
 
 module.exports = Base;
 
-},{"./../social_media/SocialMedia.jsx":243,"./../tab_links/TabLinks.jsx":245,"react":235}],240:[function(require,module,exports){
+},{"./../social_media/SocialMedia.jsx":247,"./../tab_links/TabLinks.jsx":249,"react":235}],242:[function(require,module,exports){
 var React = require('react');
+var NewsItemsList = require('../news/NewsItemsList.jsx');
 
 var News = React.createClass({
-    displayName: "News",
+    displayName: 'News',
 
     render: function () {
+
+        var news = [{
+            icon: "https://www.laptrade.com/media/icons/icon-company-incorporation.png",
+            title: "Obesity in America",
+            subtitle: "Why are Americans so fat?",
+            content: "Us Americans are fat. On every corner there is a McDonalds or KFC. Michelle Obama wants Americans to become Vegan. Civil war and unreset have sprung up due to this debate",
+            images: [{ src: "https://i.ytimg.com/vi/uCjfgiteDAI/maxresdefault.jpg" }, { src: "http://www.macforbeginners.com/wp/wp-content/uploads/2015/06/desktop-print-screen-1024x576.jpg" }],
+            location: "Kentucky, USA"
+        }, {
+            icon: "https://cdn2.iconfinder.com/data/icons/business-241/256/business_company_structure-512.png",
+            title: "Obesity in America",
+            subtitle: "Why are Americans so fat?",
+            content: "Us Americans are fat. On every corner there is a McDonalds or KFC. Michelle Obama wants Americans to become Vegan. Civil war and unreset have sprung up due to this debate",
+            images: [{ src: "https://i.ytimg.com/vi/uCjfgiteDAI/maxresdefault.jpg" }],
+            location: "Kentucky, USA"
+        }, {
+            icon: "http://www.rentsys.com/images/company.png",
+            title: "Obesity in America",
+            subtitle: "Why are Americans so fat?",
+            content: "Us Americans are fat. On every corner there is a McDonalds or KFC. Michelle Obama wants Americans to become Vegan. Civil war and unreset have sprung up due to this debate",
+            images: [{ src: "https://i.ytimg.com/vi/uCjfgiteDAI/maxresdefault.jpg" }],
+            location: "Kentucky, USA"
+        }];
+
         return React.createElement(
-            "div",
-            { className: "row" },
+            'div',
+            { className: 'row' },
             React.createElement(
-                "div",
-                { className: "col-sm-12" },
-                React.createElement(
-                    "h1",
-                    null,
-                    "News"
-                )
+                'div',
+                { className: 'col-sm-12' },
+                React.createElement(NewsItemsList, { items: news })
             )
         );
     }
@@ -26153,24 +26270,98 @@ var News = React.createClass({
 
 module.exports = News;
 
-},{"react":235}],241:[function(require,module,exports){
+},{"../news/NewsItemsList.jsx":240,"react":235}],243:[function(require,module,exports){
 var React = require('react');
+var PhotoGrid = require('../photo_grid/PhotoGrid.jsx');
 
 var Photos = React.createClass({
     displayName: 'Photos',
 
     render: function () {
+        var images = [{ src: "https://upload.wikimedia.org/wikipedia/commons/6/67/Inside_the_Batad_rice_terraces.jpg" }, { src: "http://feelgrafix.com/data/landscape/landscape-1.jpg" }, { src: "https://static.pexels.com/photos/1562/italian-landscape-mountains-nature.jpg" }, { src: "http://blog.agroknow.com/wp-content/uploads/2016/03/6835100-landscape.jpg" }];
+
         return React.createElement(
-            'h1',
-            null,
-            'Photos'
+            'div',
+            { className: 'panel' },
+            React.createElement(
+                'div',
+                { className: 'panel-body' },
+                React.createElement(PhotoGrid, { images: images, height: 150, width: 150 })
+            )
         );
     }
 });
 
 module.exports = Photos;
 
-},{"react":235}],242:[function(require,module,exports){
+},{"../photo_grid/PhotoGrid.jsx":244,"react":235}],244:[function(require,module,exports){
+var React = require('react');
+var Thumbnail = require('./Thumbnail.jsx');
+
+var PhotoGrid = React.createClass({
+    displayName: 'PhotoGrid',
+
+    render: function () {
+
+        var baseStyle = {
+            paddingTop: 20
+        };
+
+        var thumbnailStyle = {
+            paddingRight: 10,
+            display: "inline"
+        };
+
+        var height = this.props.height;
+        var width = this.props.width;
+        var createItem = function (image, index) {
+            return React.createElement(
+                'div',
+                { key: index, style: thumbnailStyle },
+                React.createElement(Thumbnail, { src: image.src, height: height, width: width })
+            );
+        };
+
+        return React.createElement(
+            'div',
+            { style: baseStyle },
+            this.props.images.map(createItem)
+        );
+    }
+});
+
+module.exports = PhotoGrid;
+
+},{"./Thumbnail.jsx":245,"react":235}],245:[function(require,module,exports){
+var React = require('react');
+var Thumbnail = React.createClass({
+    displayName: "Thumbnail",
+
+    render: function () {
+
+        var style = {
+            marginRight: 10
+        };
+
+        if (this.props.height != null) {
+            style.height = this.props.height;
+        }
+
+        if (this.props.width != null) {
+            style.width = this.props.width;
+        }
+
+        return React.createElement(
+            "a",
+            { href: "#" },
+            React.createElement("img", { src: this.props.src, style: style })
+        );
+    }
+});
+
+module.exports = Thumbnail;
+
+},{"react":235}],246:[function(require,module,exports){
 var React = require('react');
 
 var IconButton = React.createClass({
@@ -26192,7 +26383,7 @@ var IconButton = React.createClass({
 
 module.exports = IconButton;
 
-},{"react":235}],243:[function(require,module,exports){
+},{"react":235}],247:[function(require,module,exports){
 var React = require('react');
 var IconButton = require('./IconButton.jsx');
 
@@ -26217,7 +26408,7 @@ var SocialMedia = React.createClass({
 });
 module.exports = SocialMedia;
 
-},{"./IconButton.jsx":242,"react":235}],244:[function(require,module,exports){
+},{"./IconButton.jsx":246,"react":235}],248:[function(require,module,exports){
 var React = require('react');
 var Link = require('react-router').Link;
 
@@ -26252,7 +26443,7 @@ var LinkItem = React.createClass({
 
 module.exports = LinkItem;
 
-},{"react":235,"react-router":85}],245:[function(require,module,exports){
+},{"react":235,"react-router":85}],249:[function(require,module,exports){
 var React = require('react');
 var LinkItem = require('./LinkItem.jsx');
 
@@ -26277,11 +26468,11 @@ var TabLinks = React.createClass({
 });
 module.exports = TabLinks;
 
-},{"./LinkItem.jsx":244,"react":235}],246:[function(require,module,exports){
+},{"./LinkItem.jsx":248,"react":235}],250:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Routes = require('./Routes.jsx');
 
 ReactDOM.render(Routes, document.getElementById('main'));
 
-},{"./Routes.jsx":238,"react":235,"react-dom":55}]},{},[246]);
+},{"./Routes.jsx":238,"react":235,"react-dom":55}]},{},[250]);
